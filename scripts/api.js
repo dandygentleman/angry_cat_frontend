@@ -343,7 +343,7 @@ async function getBookmarkArticles(){
 
 async function getComments(articleId){
     const response = await fetch(`${backend_base_url}/article/${articleId}/comment/`)
-    
+
     if(response.status == 200) {
         response_json = await response.json()
         return response_json
@@ -406,12 +406,5 @@ async function postComment(articleId, newComment){
         })
     })
 
-    if(response.status == 201) {
-        response_json = await response.json()
-        alert(response_json.message)
-        return response_json
-    } else {
-        alert(response.status)
-
-    }
+    return response
 }

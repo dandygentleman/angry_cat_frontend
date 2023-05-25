@@ -32,12 +32,18 @@ async function loadComments(){
     const commentList = document.getElementById("comment-list")
     commentList.innerHTML = ""
 
-    response.forEach(comment => {
+    response.results.forEach(comment => {
         commentList.innerHTML += `
-            <li class="list-group-item">
-                <h5>${comment.author}</h5>
-                ${comment.content}
-                </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div>
+                    <h5>${comment.author}</h5>
+                    ${comment.content}
+                </div>
+                <div>
+                    <span class="badge bg-secondary" onclick="">수정</span>
+                    <span class="badge bg-secondary" onclick="">삭제</span>
+                </div>
+            </li>
             `
     });
 }
@@ -49,7 +55,13 @@ async function submitComment(){
     const response = await postComment(articleId, newComment)
     commentElement.value = ""
 
-    loadComments()
+    if(response.status == 201) {
+        response_json = await response.json()
+        alert(response_json.message)
+        loadComments()
+    } else {
+        alert(response.status)
+    }
 }
 
 
