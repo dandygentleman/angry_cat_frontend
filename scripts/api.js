@@ -163,44 +163,34 @@ async function handlePasswordChange() {
 }
 
 
-async function getProfile(userId){
+async function getUserInfo(){
     let token = await get_access_token()
-    const response = await fetch(`${backend_base_url}/user/${userId}/`, {
+    const response = await fetch(`${backend_base_url}/user/sign/`, {
         headers: {
             "Authorization": `Bearer ${token}`
         },
         method: 'GET'
 })
 
-    if(response.status==200){
-        const response_json = await response.json()
-        return response_json
-    }else{
-        alert("불러오는데 실패했습니다")
-    }
-
+    return response
 }
 
 
-async function changeProfile(userId){
-    const image = document.getElementById("image").files[0]
+async function changeUserInfo(){
+    const currentPassword = document.getElementById("current-password").value
     const bio = document.getElementById("bio").value
-
-    const formdata = new FormData();
-
-    if (image){
-        formdata.append('image',image)
-    }
-    formdata.append('bio',bio)
-
     let token = await get_access_token()
 
-    const response = await fetch(`${backend_base_url}/user/${userId}/`, {
+    const response = await fetch(`${backend_base_url}/user/sign/`, {
         headers: {
+            'content-type': 'application/json',
             "Authorization": `Bearer ${token}`
         },
-        method: 'PUT',
-        body: formdata
+        method: 'PATCH',
+        body: JSON.stringify({
+            "current_password": currentPassword,
+            "bio": bio
+        })
     })
 
     return response
