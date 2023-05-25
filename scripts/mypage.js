@@ -22,21 +22,22 @@ async function handlePasswordChangeButton(){
 }
 
 
-async function loadProfile(userId){
-    const response = await getProfile(userId);
+async function loadUserInfo(){
+    const response = await getUserInfo();
 
-    const profileImage = document.getElementById("profile_image")
-    const profileBio = document.getElementById("bio")
-    profileBio.innerText = response.bio
-    profileImage.innerHTML=`<img class="img-fluid" src="${backend_base_url}${response.image}">`
+    if(response.status==200){
+        const response_json = await response.json()
+
+        const profileBio = document.getElementById("bio")
+        profileBio.innerText = response_json.bio
+    } else {
+        alert(response.status)
+    }
 }
 
 
-async function changeProfileButton(){
-    const urlParams = new URLSearchParams(window.location.search);
-    userId = urlParams.get('user_id');
-
-    const response = await changeProfile(userId);
+async function changeUserInfoButton(){
+    const response = await changeUserInfo();
 
     if(response.status==200){
         const response_json = await response.json()
@@ -49,8 +50,5 @@ async function changeProfileButton(){
 
 
 window.onload = async function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    userId = urlParams.get('user_id');
-
-    await loadProfile(userId);
+    await loadUserInfo();
 }

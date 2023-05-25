@@ -15,9 +15,6 @@ async function injectNavbar(){
     if(payload){
         const payload_parse = JSON.parse(payload)
 
-        const intro = document.getElementById("intro")
-        intro.innerText = `${payload_parse.username}님 안녕하세요`
-
         let navbarLeft = document.getElementById("navbar-left")
         let articleCreateLi = document.createElement("li")
         articleCreateLi.setAttribute("class","nav-item")
@@ -27,15 +24,6 @@ async function injectNavbar(){
         articleCreateLink.setAttribute("href","/article_create.html")
         articleCreateLink.innerHTML = "글 작성"
         articleCreateLi.appendChild(articleCreateLink)
-
-        let feedPageLi = document.createElement("li")
-        feedPageLi.setAttribute("class","nav-item")
-
-        let feedPageLink = document.createElement("a")
-        feedPageLink.setAttribute("class","nav-link")
-        feedPageLink.setAttribute("href","/feedpage.html")
-        feedPageLink.innerHTML = "피드페이지"
-        feedPageLi.appendChild(feedPageLink)
 
         let bookmarkPageLi = document.createElement("li")
         bookmarkPageLi.setAttribute("class","nav-item")
@@ -47,7 +35,6 @@ async function injectNavbar(){
         bookmarkPageLi.appendChild(bookmarkPageLink)
 
         navbarLeft.append(articleCreateLi)
-        navbarLeft.append(feedPageLi)
         navbarLeft.append(bookmarkPageLi)
 
         let navbarRight = document.getElementById("navbar-right")

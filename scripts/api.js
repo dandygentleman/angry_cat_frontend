@@ -100,22 +100,7 @@ async function handleLogin() {
         })
     })
 
-    if(response.status == 200){
-        const response_json = await response.json()
-
-
-        localStorage.setItem("access", response_json.access);
-        localStorage.setItem("refresh", response_json.refresh);
-        const jsonPayload = await parse_payload(response_json.access);
-
-        localStorage.setItem("payload", jsonPayload);
-        alert("환영합니다.")
-        window.location.replace(`${frontend_base_url}/`)
-    }else{
-        alert("회원정보가 일치하지 않습니다.")
-    }
-
-
+    return response
 }
 
 
@@ -178,44 +163,34 @@ async function handlePasswordChange() {
 }
 
 
-async function getProfile(userId){
+async function getUserInfo(){
     let token = await get_access_token()
-    const response = await fetch(`${backend_base_url}/user/${userId}/`, {
+    const response = await fetch(`${backend_base_url}/user/sign/`, {
         headers: {
             "Authorization": `Bearer ${token}`
         },
         method: 'GET'
-})
+    })
 
-    if(response.status==200){
-        const response_json = await response.json()
-        return response_json
-    }else{
-        alert("불러오는데 실패했습니다")
-    }
-
+    return response
 }
 
 
-async function changeProfile(userId){
-    const image = document.getElementById("image").files[0]
+async function changeUserInfo(){
+    const currentPassword = document.getElementById("current-password").value
     const bio = document.getElementById("bio").value
-
-    const formdata = new FormData();
-
-    if (image){
-        formdata.append('image',image)
-    }
-    formdata.append('bio',bio)
-
     let token = await get_access_token()
 
-    const response = await fetch(`${backend_base_url}/user/${userId}/`, {
+    const response = await fetch(`${backend_base_url}/user/sign/`, {
         headers: {
+            'content-type': 'application/json',
             "Authorization": `Bearer ${token}`
         },
-        method: 'PUT',
-        body: formdata
+        method: 'PATCH',
+        body: JSON.stringify({
+            "current_password": currentPassword,
+            "bio": bio
+        })
     })
 
     return response
@@ -237,48 +212,40 @@ async function getArticles(pageNum){
 
 async function postArticle(){
     const title = document.getElementById("title").value
-    const content = document.getElementById("content").value
+    const description = document.getElementById("description").value
+    const image = document.getElementById("image").files[0]
+
+    const formdata = new FormData();
+
+    formdata.append('title',title)
+    formdata.append('description',description)
+    formdata.append('image',image)
+    formdata.append('cat_says',description)
+    formdata.append('origin_image',image)
 
     let token = await get_access_token()
     const response = await fetch(`${backend_base_url}/article/`, {
         headers: {
-            'content-type': 'application/json',
             "Authorization": `Bearer ${token}`
         },
         method: 'POST',
-        body: JSON.stringify({
-            "title": title,
-            "content": content
-        })
+        body: formdata
     })
 
-    if(response.status == 201) {
-        alert("글작성 완료!")
-        window.location.replace(`${frontend_base_url}/`);
-    } else {
-        alert(response.status)
-    }
+    return response
 }
 
 
 async function getArticle(articleId){
     const response = await fetch(`${backend_base_url}/article/${articleId}/`)
 
-    if(response.status == 200) {
-        response_json = await response.json()
-        return response_json
-    } else {
-        alert(response.status)
-    }
+    return response
 }
 
 
-async function updateArticle(){
-    const urlParams = new URLSearchParams(window.location.search);
-    articleId = urlParams.get('article_id');
-
+async function updateArticle(articleId){
     const title = document.getElementById("title").value
-    const content = document.getElementById("content").value
+    const description = document.getElementById("description").value
 
     let token = await get_access_token()
     
@@ -290,16 +257,12 @@ async function updateArticle(){
         method: 'PUT',
         body: JSON.stringify({
             "title": title,
-            "content": content
+            "description": description,
+            "cat_says": description
         })
     })
 
-    if(response.status == 200) {
-        alert("수정 완료!")
-        window.location.replace(`${frontend_base_url}/`);
-    } else {
-        alert(response.status)
-    }
+    return response
 }
 
 
@@ -360,27 +323,9 @@ async function bookmarkArticle(articleId){
 }
 
 
-async function getFeedArticles(){
+async function getBookmarkArticles(pageNum){
     let token = await get_access_token()
-    const response = await fetch(`${backend_base_url}/article/feed/`, {
-        headers: {
-            "Authorization": `Bearer ${token}`
-        },
-        method: 'GET'
-    })
-
-    if(response.status==200){
-        const response_json = await response.json()
-        return response_json
-    }else{
-        alert("불러오는데 실패했습니다")
-    }
-}
-
-
-async function getBookmarkArticles(){
-    let token = await get_access_token()
-    const response = await fetch(`${backend_base_url}/article/bookmark_list/`, {
+    const response = await fetch(`${backend_base_url}/article/?page=${pageNum}&filter=bookmarked`, {
         headers: {
             "Authorization": `Bearer ${token}`
         },
@@ -398,7 +343,7 @@ async function getBookmarkArticles(){
 
 async function getComments(articleId){
     const response = await fetch(`${backend_base_url}/article/${articleId}/comment/`)
-    
+
     if(response.status == 200) {
         response_json = await response.json()
         return response_json
@@ -408,8 +353,8 @@ async function getComments(articleId){
 }
 
 
-async function getProfile(userId){
-    const response = await fetch(`${backend_base_url}/user/${userId}/`)
+async function getUserIdInfo(userId){
+    const response = await fetch(`${backend_base_url}/user/sign/${userId}/`)
     if(response.status==200){
         const response_json = await response.json()
         return response_json
@@ -421,8 +366,8 @@ async function getProfile(userId){
         window.location.href=`${frontend_base_url}`
     }
 }
-async function getProfileArticle(userId,pageNum){
-    const response = await fetch(`${backend_base_url}/user/${userId}/article/?page=${pageNum}`)
+async function getUserIdArticles(userId,pageNum){
+    const response = await fetch(`${backend_base_url}/article/?page=${pageNum}&filter=user&user_id=${userId}`)
     if(response.status==200){
         const response_json = await response.json()
         return response_json
@@ -431,22 +376,6 @@ async function getProfileArticle(userId,pageNum){
     }
 }
 
-async function followToggle(userId){
-    let token = await get_access_token()
-    const response = await fetch(`${backend_base_url}/user/${userId}/follow/`, {
-        method: 'POST',   
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    })
-    if(response.status==200 || response.status==400){
-        const response_json = await response.json()
-        alert(response_json.message)
-        location.reload()
-    }else{
-        alert("failed")
-    }
-}
 
 async function postComment(articleId, newComment){
     let token = await get_access_token()
@@ -461,12 +390,5 @@ async function postComment(articleId, newComment){
         })
     })
 
-    if(response.status == 201) {
-        response_json = await response.json()
-        alert(response_json.message)
-        return response_json
-    } else {
-        alert(response.status)
-
-    }
+    return response
 }

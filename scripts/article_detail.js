@@ -2,36 +2,48 @@ let articleId
 let authorId
 
 
-async function loadArticle(articleId){
+async function loadArticle(){
     const response = await getArticle(articleId);
 
-    const articleTitle = document.getElementById("article-title")
-    const articleContent = document.getElementById("article-content")
-    const articleAuthor = document.getElementById("article-author")
-    const likesCount = document.getElementById("likes-count")
-    articleTitle.innerText = response.title
-    articleContent.innerText = response.content
-    articleAuthor.innerText = response.author
-    likesCount.innerText = response.likes_count
-    authorId = response.author_id
-    const commentCount=document.getElementById("comment-count")
-    commentCount.innerText=`댓글 ${response.comment_count}개`
+    if(response.status == 200) {
+        response_json = await response.json()
+
+        const articleTitle = document.getElementById("article-title")
+        const articleDescription = document.getElementById("article-description")
+        const articleAuthor = document.getElementById("article-author")
+        const likesCount = document.getElementById("likes-count")
+        articleTitle.innerText = response_json.title
+        articleDescription.innerText = response_json.description
+        articleAuthor.innerText = response_json.author
+        likesCount.innerText = response_json.likes_count
+        authorId = response_json.author_id
+        const commentCount=document.getElementById("comment-count")
+        commentCount.innerText=`댓글 ${response_json.comment_count}개`
+    } else {
+        alert(response.status)
+    }
 }
 
 
-async function loadComments(articleId){
+async function loadComments(){
     const response = await getComments(articleId);
     
 
     const commentList = document.getElementById("comment-list")
     commentList.innerHTML = ""
 
-    response.forEach(comment => {
+    response.results.forEach(comment => {
         commentList.innerHTML += `
-            <li class="list-group-item">
-                <h5>${comment.author}</h5>
-                ${comment.content}
-                </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div>
+                    <h5>${comment.author}</h5>
+                    ${comment.content}
+                </div>
+                <div>
+                    <span class="badge bg-secondary" onclick="">수정</span>
+                    <span class="badge bg-secondary" onclick="">삭제</span>
+                </div>
+            </li>
             `
     });
 }
@@ -43,11 +55,17 @@ async function submitComment(){
     const response = await postComment(articleId, newComment)
     commentElement.value = ""
 
-    loadComments(articleId)
+    if(response.status == 201) {
+        response_json = await response.json()
+        alert(response_json.message)
+        loadComments()
+    } else {
+        alert(response.status)
+    }
 }
 
 
-async function injectButton(articleId){
+async function injectButton(){
     let buttonArea = document.getElementById("button-area")
 
     let authorBtn = document.createElement("a")
@@ -90,7 +108,7 @@ window.onload = async function() {
     const urlParams = new URLSearchParams(window.location.search);
     articleId = urlParams.get('article_id');
 
-    await loadArticle(articleId);
-    await injectButton(articleId);
-    await loadComments(articleId);
+    await loadArticle();
+    await injectButton();
+    await loadComments();
 }
