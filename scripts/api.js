@@ -170,7 +170,7 @@ async function getUserInfo(){
             "Authorization": `Bearer ${token}`
         },
         method: 'GET'
-})
+    })
 
     return response
 }

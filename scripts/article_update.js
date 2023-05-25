@@ -8,10 +8,10 @@ async function loadArticle(){
         response_json = await response.json()
         
         const articleTitle = document.getElementById("title")
-        const articledescription = document.getElementById("description")
+        const articleDescription = document.getElementById("description")
 
         articleTitle.setAttribute("value",response_json.title)
-        articledescription.innerText = response_json.description
+        articleDescription.innerText = response_json.description
     } else {
         alert(response.status)
     }
