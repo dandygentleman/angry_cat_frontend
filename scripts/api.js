@@ -239,21 +239,13 @@ async function postArticle(){
 async function getArticle(articleId){
     const response = await fetch(`${backend_base_url}/article/${articleId}/`)
 
-    if(response.status == 200) {
-        response_json = await response.json()
-        return response_json
-    } else {
-        alert(response.status)
-    }
+    return response
 }
 
 
-async function updateArticle(){
-    const urlParams = new URLSearchParams(window.location.search);
-    articleId = urlParams.get('article_id');
-
+async function updateArticle(articleId){
     const title = document.getElementById("title").value
-    const content = document.getElementById("content").value
+    const description = document.getElementById("description").value
 
     let token = await get_access_token()
     
@@ -265,16 +257,12 @@ async function updateArticle(){
         method: 'PUT',
         body: JSON.stringify({
             "title": title,
-            "content": content
+            "description": description,
+            "cat_says": description
         })
     })
 
-    if(response.status == 200) {
-        alert("수정 완료!")
-        window.location.replace(`${frontend_base_url}/`);
-    } else {
-        alert(response.status)
-    }
+    return response
 }
 
 
