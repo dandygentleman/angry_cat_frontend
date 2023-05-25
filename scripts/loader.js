@@ -15,9 +15,6 @@ async function injectNavbar(){
     if(payload){
         const payload_parse = JSON.parse(payload)
 
-        const intro = document.getElementById("intro")
-        intro.innerText = `${payload_parse.username}님 안녕하세요`
-
         let navbarLeft = document.getElementById("navbar-left")
         let articleCreateLi = document.createElement("li")
         articleCreateLi.setAttribute("class","nav-item")
