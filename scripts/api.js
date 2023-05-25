@@ -323,9 +323,9 @@ async function bookmarkArticle(articleId){
 }
 
 
-async function getBookmarkArticles(){
+async function getBookmarkArticles(pageNum){
     let token = await get_access_token()
-    const response = await fetch(`${backend_base_url}/article/bookmark_list/`, {
+    const response = await fetch(`${backend_base_url}/article/?page=${pageNum}&filter=bookmarked`, {
         headers: {
             "Authorization": `Bearer ${token}`
         },
