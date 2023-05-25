@@ -353,8 +353,8 @@ async function getComments(articleId){
 }
 
 
-async function getProfile(userId){
-    const response = await fetch(`${backend_base_url}/user/${userId}/`)
+async function getUserIdInfo(userId){
+    const response = await fetch(`${backend_base_url}/user/sign/${userId}/`)
     if(response.status==200){
         const response_json = await response.json()
         return response_json
@@ -366,8 +366,8 @@ async function getProfile(userId){
         window.location.href=`${frontend_base_url}`
     }
 }
-async function getProfileArticle(userId,pageNum){
-    const response = await fetch(`${backend_base_url}/user/${userId}/article/?page=${pageNum}`)
+async function getUserIdArticles(userId,pageNum){
+    const response = await fetch(`${backend_base_url}/article/?page=${pageNum}&filter=user&user_id=${userId}`)
     if(response.status==200){
         const response_json = await response.json()
         return response_json
@@ -376,22 +376,6 @@ async function getProfileArticle(userId,pageNum){
     }
 }
 
-async function followToggle(userId){
-    let token = await get_access_token()
-    const response = await fetch(`${backend_base_url}/user/${userId}/follow/`, {
-        method: 'POST',   
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    })
-    if(response.status==200 || response.status==400){
-        const response_json = await response.json()
-        alert(response_json.message)
-        location.reload()
-    }else{
-        alert("failed")
-    }
-}
 
 async function postComment(articleId, newComment){
     let token = await get_access_token()
