@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>상세 게시글</title>
+        <!-- JS파일 임포트 부분 -->
+        <script src="/scripts/api.js"></script>
+        <script src="/scripts/article_detail.js"></script>
+        <!-- 부트스트랩 임포트 부분 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+            crossorigin="anonymous"
+        />
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body>
+        <header></header>
+        <!-- 아티클 상세 보기 -->
+        <div class="container text-center w-50">
+            <h1 id="article-title"></h1>
+            <h3 id="article-author"></h3>
+        </div>
+        <div class="container w-50 mt-5">
+            <div id="article-content"></div>
+        </div>
+        <div class="container text-center w-50">
+            <div id="button-area"></div>
+            <p>좋아요 수: <span id="likes-count"></span></p>
+        </div>
+        <!-- 댓글 리스팅 영역 -->
+        <div class="container w-50 mt-5">
+            <h5 id="comment-count">댓글</h5>
+            <ul class="list-group list-group-flush" id="comment-list"></ul>
+        </div>
+        <!-- 댓글 작성 영역 -->
+        <div class="container w-50 mt-5">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="comment-input" />
+                <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                    onclick="submitComment()"
+                >
+                    댓글작성
+                </button>
+            </div>
+        </div>
+        <script src="/scripts/loader.js"></script>
+    </body>
+</html>
