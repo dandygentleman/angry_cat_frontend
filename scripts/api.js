@@ -422,3 +422,71 @@ async function deleteComment(commentId){
 
     return response
 }
+
+async function getOauthUrl() {
+    const response = await fetch(
+        backend_base_url+"/user/google/url/"
+    );
+    const response_json = await response.json();
+    console.log(response_json);
+    await oauthSignIn(
+        response_json["client_id"],
+        response_json["redirect_uri"]
+    );
+}
+async function oauthSignIn(key, redirecturi) {
+    var oauth2Endpoint =
+        "https://accounts.google.com/o/oauth2/v2/auth";
+
+    var form = document.createElement("form");
+    form.setAttribute("method", "GET");
+    form.setAttribute("action", oauth2Endpoint);
+    var params = {
+        client_id: key,
+        redirect_uri: redirecturi,
+        response_type: "token",
+        scope: "email",
+        include_granted_scopes: "true",
+        state: "pass-through value",
+        prompt: "consent",
+    };
+
+    for (var p in params) {
+        var input = document.createElement("input");
+        input.setAttribute("type", "hidden");
+        input.setAttribute("name", p);
+        input.setAttribute("value", params[p]);
+        form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+    form.submit()
+}
+
+async function getGoogleOAuthTokens(){
+    const access_token = new URLSearchParams(location.href).get(
+        "access_token"
+    );
+    if (access_token==undefined){
+        return 0
+    }
+    const response = await fetch(
+        backend_base_url+"/user/google/token/",
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ access_token: access_token }),
+        }
+    );
+    if(response.status==200){
+        const response_json = await response.json()
+
+        localStorage.setItem("access", response_json.access);
+        localStorage.setItem("refresh", response_json.refresh);
+        const jsonPayload = await parse_payload(response_json.access);
+        localStorage.setItem("payload", jsonPayload);
+        window.location.replace(`${frontend_base_url}/`)
+    }else{
+        alert(response.status)
+    }
+}

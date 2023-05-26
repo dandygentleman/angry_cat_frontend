@@ -65,4 +65,5 @@ window.onload = async function(){
     const urlParams = new URLSearchParams(window.location.search);
     filter = urlParams.get('filter');
     await loadArticles(1,filter);
+    await getGoogleOAuthTokens();
 }
