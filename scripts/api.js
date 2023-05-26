@@ -341,18 +341,6 @@ async function getBookmarkArticles(pageNum){
 }
 
 
-async function getComments(articleId){
-    const response = await fetch(`${backend_base_url}/article/${articleId}/comment/`)
-
-    if(response.status == 200) {
-        response_json = await response.json()
-        return response_json
-    } else {
-        alert(response.status)
-    }
-}
-
-
 async function getUserIdInfo(userId){
     const response = await fetch(`${backend_base_url}/user/sign/${userId}/`)
     if(response.status==200){
@@ -377,6 +365,18 @@ async function getUserIdArticles(userId,pageNum){
 }
 
 
+async function getComments(articleId){
+    const response = await fetch(`${backend_base_url}/article/${articleId}/comment/`)
+
+    if(response.status == 200) {
+        response_json = await response.json()
+        return response_json
+    } else {
+        alert(response.status)
+    }
+}
+
+
 async function postComment(articleId, newComment){
     let token = await get_access_token()
     const response = await fetch(`${backend_base_url}/article/${articleId}/comment/`, {
@@ -388,6 +388,36 @@ async function postComment(articleId, newComment){
         body: JSON.stringify({
             "content": newComment,
         })
+    })
+
+    return response
+}
+
+
+async function updateComment(commentId, newComment){
+    let token = await get_access_token()
+    const response = await fetch(`${backend_base_url}/article/comment/${commentId}/`, {
+        method: 'PUT',
+        headers: {
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            "content": newComment,
+        })
+    })
+
+    return response
+}
+
+
+async function deleteComment(commentId){
+    let token = await get_access_token()
+    const response = await fetch(`${backend_base_url}/article/comment/${commentId}/`, {
+        method: 'DELETE',
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
     })
 
     return response
