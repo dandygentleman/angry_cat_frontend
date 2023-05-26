@@ -15,7 +15,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- 네비게이션바 왼쪽 영역 -->
-            <ul class="navbar-nav me-auto" id="navbar-left"></ul>
+            <ul class="navbar-nav me-auto" id="navbar-left">
+                <li class="nav-item">
+                    <button class="nav-link btn" onclick="loadArticles(1)">최신글</a>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link btn" onclick="loadArticles(1, 'trending')">트렌딩</a>
+                </li>
+            </ul>
             <!-- 네비게이션바 오른쪽 영역 -->
             <ul class="navbar-nav ms-auto" id="navbar-right">
                 <li class="nav-item" id="login-button">
