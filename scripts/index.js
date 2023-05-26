@@ -63,4 +63,5 @@ async function loadArticles(pageNum, filter){
 
 window.onload = async function(){
     await loadArticles(1);
+    await getGoogleOAuthTokens();
 }
