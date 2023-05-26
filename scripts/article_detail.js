@@ -34,15 +34,15 @@ async function loadComments(){
 
     response.results.forEach(comment => {
         commentList.innerHTML += `
-            <li class="list-group-item d-flex justify-content-between align-items-start">
-                <div>
-                    <h5>${comment.author}</h5>
-                    ${comment.content}
-                </div>
-                <div>
-                    <span class="badge bg-secondary" onclick="">수정</span>
-                    <span class="badge bg-secondary" onclick="">삭제</span>
-                </div>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5>${comment.author}</h5>
+                        <p>${comment.content}</p>
+                    </div>
+                    <div>
+                        <span class="badge bg-secondary" onclick="updateCommentButton(${comment.id}, this)">수정</span>
+                        <span class="badge bg-secondary" onclick="deleteCommentButton(${comment.id})">삭제</span>
+                    </div>
             </li>
             `
     });
@@ -58,6 +58,49 @@ async function submitComment(){
     if(response.status == 201) {
         response_json = await response.json()
         alert(response_json.message)
+        loadComments()
+    } else {
+        alert(response.status)
+    }
+}
+
+
+async function updateCommentButton(commentId, element){
+    const comment_content = element.parentNode.previousElementSibling.querySelector('p').innerText
+    const commentElement = document.getElementById("comment-input")
+    commentElement.value = comment_content
+    
+    const submitCommentButton = document.getElementById("submitCommentButton")
+    submitCommentButton.innerText = "댓글수정"
+    submitCommentButton.setAttribute("onclick",`submitUpdateComment(${commentId})`)
+}
+
+
+async function submitUpdateComment(commentId){
+    const commentElement = document.getElementById("comment-input")
+    const newComment = commentElement.value
+    const response = await updateComment(commentId, newComment)
+    commentElement.value = ""
+    
+    if(response.status == 200) {
+        response_json = await response.json()
+        alert(response_json.message)
+        loadComments()
+    } else {
+        alert(response.status)
+    }
+
+    const submitCommentButton = document.getElementById("submitCommentButton")
+    submitCommentButton.innerText = "댓글작성"
+    submitCommentButton.setAttribute("onclick",`submitComment()`)
+}
+
+
+async function deleteCommentButton(commentId){
+    const response = await deleteComment(commentId)
+
+    if(response.status == 204) {
+        alert("삭제 완료!")
         loadComments()
     } else {
         alert(response.status)
