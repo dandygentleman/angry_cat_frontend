@@ -62,6 +62,8 @@ async function loadArticles(pageNum, filter){
 
 
 window.onload = async function(){
-    await loadArticles(1);
+    const urlParams = new URLSearchParams(window.location.search);
+    filter = urlParams.get('filter');
+    await loadArticles(1,filter);
     await getGoogleOAuthTokens();
 }
