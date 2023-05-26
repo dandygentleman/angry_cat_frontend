@@ -3,8 +3,8 @@ function articleDetail(article_id){
 }
 
 
-async function loadArticles(pageNum){
-    articles = await getArticles(pageNum)
+async function loadArticles(pageNum, filter){
+    articles = await getArticles(pageNum, filter)
 
     const article_list = document.getElementById("article-list")
     article_list.innerHTML = ""
@@ -53,7 +53,7 @@ async function loadArticles(pageNum){
         newPageBtn.setAttribute("class", "page-item")
         const newPageLink = document.createElement("a")
         newPageLink.setAttribute("class", "page-link")
-        newPageLink.setAttribute("onclick", `loadArticles(${i})`)
+        newPageLink.setAttribute("onclick", `loadArticles(${i}, '${filter}')`)
         newPageLink.innerText = i
         newPageBtn.appendChild(newPageLink)
         pagination.append(newPageBtn)

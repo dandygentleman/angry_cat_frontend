@@ -197,9 +197,9 @@ async function changeUserInfo(){
 }
 
 
-async function getArticles(pageNum){
-    const response = await fetch(`${backend_base_url}/article/?page=${pageNum}`)
-
+async function getArticles(pageNum, filter){
+    const response = await fetch(`${backend_base_url}/article/?page=${pageNum}&filter=${filter}`)
+    
     if(response.status==200){
         const response_json = await response.json()
         return response_json
