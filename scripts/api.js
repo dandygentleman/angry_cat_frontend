@@ -177,7 +177,7 @@ async function getUserInfo(){
 
 
 async function changeUserInfo(){
-    const currentPassword = document.getElementById("current-password").value
+    const currentPassword = document.getElementById("current-password-bio").value
     const bio = document.getElementById("bio").value
     let token = await get_access_token()
 

@@ -70,18 +70,28 @@
                     비밀번호변경
                 </button>
             </div>
+            <hr />
+            <hr />
             <!-- 소개 수정 영역 -->
             <div class="mb-3">
                 <label for="bio" class="form-label">bio</label>
                 <textarea class="form-control" id="bio" rows="3"></textarea>
             </div>
-            <button
-                type="button"
-                class="btn btn-outline-primary"
-                onclick="changeUserInfoButton()"
-            >
-                수정
-            </button>
+            <div class="input-group mb-3">
+                <input
+                    type="password"
+                    class="form-control"
+                    id="current-password-bio"
+                    placeholder="현재 비밀번호"
+                />
+                <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                    onclick="changeUserInfoButton()"
+                >
+                    수정
+                </button>
+            </div>
         </div>
         <script src="/scripts/loader.js"></script>
     </body>
