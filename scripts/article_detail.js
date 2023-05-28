@@ -6,14 +6,34 @@ async function loadArticle(){
     const response = await getArticle(articleId);
 
     if(response.status == 200) {
-        response_json = await response.json()
+        const response_json = await response.json()
 
         const articleTitle = document.getElementById("article-title")
-        const articleDescription = document.getElementById("article-description")
+        const articleContent = document.getElementById("article-content")
+        const articlePictures=document.getElementById("article-pictures")
         const articleAuthor = document.getElementById("article-author")
         const likesCount = document.getElementById("likes-count")
         articleTitle.innerText = response_json.title
-        articleDescription.innerText = response_json.description
+        articlePictures.innerHTML = `<div class="col-md-6">
+                                        Original Picture: <br> <img class="img-fluid" src="${backend_base_url}${response_json.input_pic}" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        Changed Picture: <br> <img class="img-fluid" src="${backend_base_url}${response_json.change_pic}" />
+                                    </div>`
+        articleContent.innerHTML = `<div class="card mt-3">
+                                        <div class="card-body text-start">
+                                            <h3>${response_json.author}의 한마디</h3>
+                                            <p>${response_json.description}</p>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="card mt-3">
+                                        <div class="text-end card-body">
+                                            <h3>고양이의 한마디</h3>
+                                            <p>${response_json.cat_says}</p>
+                                        </div>
+                                        
+                                    </div>`
         articleAuthor.innerText = response_json.author
         likesCount.innerText = response_json.likes_count
         authorId = response_json.author_id

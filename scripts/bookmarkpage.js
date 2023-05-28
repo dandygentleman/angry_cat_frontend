@@ -16,6 +16,10 @@ async function loadBookmarkArticles(pageNum){
         newBtn.setAttribute("id", article.id)
         newBtn.setAttribute("onclick", `articleDetail(${article.id})`)
 
+
+        const newThumbnail=document.createElement("div")
+        newThumbnail.setAttribute("style",`height:250px; background-image:url("${backend_base_url}${article.change_pic}"); background-size:contain; background-repeat: no-repeat; background-position:center;`)
+        newBtn.appendChild(newThumbnail)
         const newTitle = document.createElement("h5")
         newTitle.setAttribute("class", "mb-1")
         newTitle.innerText = article.title
