@@ -512,18 +512,14 @@ async function genImage(){
     return response
 }
 async function genMent(){
-    const description = document.getElementById("description")
-    
-
-    const formdata = new FormData();
-    formdata.append('description',description.value)
+    const description = document.getElementById("description").value
     let token = await get_access_token()
     const response = await fetch(`${backend_base_url}/article/mentgen/`, {
         headers: {
             "Authorization": `Bearer ${token}`
         },
         method: 'POST',
-        body: formdata
+        body: JSON.stringify({"description":description})
     })
     return response
 }
