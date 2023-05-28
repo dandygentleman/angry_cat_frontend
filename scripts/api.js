@@ -213,15 +213,14 @@ async function getArticles(pageNum, filter){
 async function postArticle(){
     const title = document.getElementById("title").value
     const description = document.getElementById("description").value
-    const image = document.getElementById("image").files[0]
-
+    const pictures = document.getElementById("picture_id").value
+    const cat_says=document.getElementById("cat_says").value
     const formdata = new FormData();
 
     formdata.append('title',title)
     formdata.append('description',description)
-    formdata.append('image',image)
-    formdata.append('cat_says',description)
-    formdata.append('origin_image',image)
+    formdata.append('cat_says',cat_says)
+    formdata.append('pictures',pictures)
 
     let token = await get_access_token()
     const response = await fetch(`${backend_base_url}/article/`, {
@@ -489,4 +488,39 @@ async function getGoogleOAuthTokens(){
     }else{
         alert(response.status)
     }
+}
+async function genImage(){
+    const image = document.getElementById("image").files[0]
+    if(image){
+        console.log(image)
+    }else{
+        console.log("fail1")
+        console.log(image)
+    }
+
+    const formdata = new FormData();
+    formdata.append('input_pic',image)
+    let token = await get_access_token()
+    const response = await fetch(`${backend_base_url}/article/picgen/`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
+        method: 'POST',
+        body: formdata
+    })
+
+    return response
+}
+async function genMent(){
+    const description = document.getElementById("description").value
+    let token = await get_access_token()
+    const response = await fetch(`${backend_base_url}/article/mentgen/`, {
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "content-type": "application/json",
+        },
+        method: 'POST',
+        body: JSON.stringify({"description":description})
+    })
+    return response
 }
