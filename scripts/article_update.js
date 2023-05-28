@@ -9,6 +9,10 @@ async function loadArticle(){
         
         const articleTitle = document.getElementById("title")
         articleTitle.setAttribute("value",response_json.title)
+        const articleDescription=document.getElementById("description")
+        articleDescription.innerText=response_json.description
+        const articleCat_says=document.getElementById("cat_says")
+        articleCat_says.innerText=response_json.cat_says
     } else {
         alert(response.status)
     }
@@ -22,7 +26,10 @@ async function updateArticleButton(){
         alert("글이 저장되었습니다.")
         window.location.replace(`${frontend_base_url}/`);
     } else {
-        alert(response.status)
+        const response_json=await response.json()
+        for(p in response_json){
+            alert(`${p}:${response_json[p]}`)
+        }
     }
 }
 

@@ -245,14 +245,14 @@ async function getArticle(articleId){
 async function updateArticle(articleId){
     const data = {}
     const title = document.getElementById("title").value
-    data['title'] = title
     
     const description = document.getElementById("description").value
     const cat_says = document.getElementById("cat_says").value
-    if (cat_says){
-        data['description'] =description
-        data['cat_says'] = cat_says
-    }
+    
+    data['title'] = title
+    data['description'] =description
+    data['cat_says'] = cat_says
+    
 
     let token = await get_access_token()
     
