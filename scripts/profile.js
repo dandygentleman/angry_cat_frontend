@@ -1,3 +1,6 @@
+function articleDetail(article_id){
+    window.location.href = `${frontend_base_url}/article_detail.html?article_id=${article_id}`
+}
 async function loadProfile(userId){
     const response = await getUserIdInfo(userId);
 
