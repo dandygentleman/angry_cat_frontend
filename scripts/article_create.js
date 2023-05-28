@@ -19,8 +19,8 @@ async function genImageButton(){
         var inputPic=document.getElementById("input_pics")
         var changePic=document.getElementById("change_pics")
         var picture_id=document.getElementById("picture_id")
-        inputPic.innerHTML=`Input Picture:<br><img src=${backend_base_url+response_json.input_pic}></img>`
-        changePic.innerHTML=`Change Picture:<br><img src=${backend_base_url+response_json.change_pic}></img>`
+        inputPic.innerHTML=`Input Picture:<br><img class="img-fluid" src=${backend_base_url+response_json.input_pic}></img>`
+        changePic.innerHTML=`Change Picture:<br><img class="img-fluid" src=${backend_base_url+response_json.change_pic}></img>`
         picture_id.setAttribute("value",response_json.id)
         
     } else {
