@@ -516,7 +516,8 @@ async function genMent(){
     let token = await get_access_token()
     const response = await fetch(`${backend_base_url}/article/mentgen/`, {
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`,
+            "content-type": "application/json",
         },
         method: 'POST',
         body: JSON.stringify({"description":description})
